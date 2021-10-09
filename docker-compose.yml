@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  mysql:
+    container_name: mysql
+    image: mariadb:10.6
+    ports:
+      - 3360:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+    healthcheck:
+      test: ["CMD", "mysqladmin", "--user=root", "--password=", "--host=127.0.0.1", "ping", "--silent"]
+      interval: 2s
+      timeout: 10s
+      retries: 10
+    command: ["--default-authentication-plugin=mysql_native_password"]
+
+  api_sfl:
+    container_name: api_sfl
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "8040:8040"
+      - "9040:9001"
+    volumes:
+      - .:/app:delegated
+    command: symfony serve --dir=app/public --port=8040 --force-php-discovery
