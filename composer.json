@@ -5,8 +5,6 @@
   "require": {
     "php": "^8.0",
 
-    "ext-amqp": "*",
-    "ext-apcu": "*",
     "ext-json": "*",
     "ext-zend-opcache": "*",
     "ext-pdo": "*",
@@ -24,16 +22,10 @@
 
     "doctrine/dbal": "^2.10",
     "doctrine/orm": "^2.7",
-    "ocramius/proxy-manager": "2.8.1",
-
-    "elasticsearch/elasticsearch": "^7.3",
     "monolog/monolog": "^2.1",
-
-    "endclothing/prometheus_client_php": "^1.0"
+    "symfony/runtime": "^5.3"
   },
   "require-dev": {
-    "ext-xdebug": "*",
-
     "roave/security-advisories": "dev-master",
 
     "behat/behat": "^3.6",
@@ -44,10 +36,7 @@
     "phpunit/phpunit": "^9.2",
     "mockery/mockery": "^1.4",
 
-    "fzaninotto/faker": "^1.9",
-
-    "symfony/debug": "^4.4",
-    "vimeo/psalm": "^4.1"
+    "symfony/debug": "^4.4"
   },
   "autoload": {
     "psr-4": {
@@ -57,10 +46,16 @@
   },
   "autoload-dev": {
     "psr-4": {
+      "App\\": "app/src",
+      "Sfl\\": "src",
       "Sfl\\Tests\\": ["tests"]
     }
   },
   "extra":{
+    "symfony": {
+      "allow-contrib": false,
+      "require": "5.3.*"
+    },
     "config-dir": "app/config",
     "bin-dir": "app/bin",
     "src-dir": "app/src",

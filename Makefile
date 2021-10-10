@@ -64,6 +64,10 @@ ping-mysql:
 	@docker exec mysql mysqladmin --user=root --password= --host "127.0.0.1" ping --silent
 
 clean-cache:
-	@rm -rf apps/*/*/var
+	@rm -rf app/*/var
 	@docker exec api_sfl ./app/bin/console cache:warmup
+
+.PHONY: sh
+sh:
+	docker exec -ti -u1000 api_sfl sh -l
 
