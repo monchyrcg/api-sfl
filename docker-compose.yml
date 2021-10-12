@@ -26,5 +26,5 @@ services:
       - "8040:8040"
       - "9040:9001"
     volumes:
-      - .:/app:delegated
+      - .:/app
     command: symfony serve --dir=app/public --port=8040 --force-php-discovery

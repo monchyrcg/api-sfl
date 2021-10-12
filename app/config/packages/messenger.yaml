@@ -1,0 +1,16 @@
+framework:
+  messenger:
+    default_bus: messenger.bus.commands
+    buses:
+      messenger.bus.commands:
+      messenger.bus.queries:
+        default_middleware: allow_no_handlers
+
+
+    failure_transport: failed
+
+    transports:
+      sync: 'sync://'
+
+      failed: '%env(MESSENGER_TRANSPORT_FAILED_DSN)%'
+

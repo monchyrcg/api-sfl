@@ -3,6 +3,7 @@
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+
 parameters:
 
 services:
@@ -10,6 +11,14 @@ services:
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    _instanceof:
+        Sfl\Shared\Application\Bus\CommandHandler:
+            tags:
+                - { name: messenger.message_handler, bus: messenger.bus.commands }
+        Sfl\Shared\Application\Bus\QueryHandler:
+            tags:
+                - { name: messenger.message_handler, bus: messenger.bus.queries }
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -20,9 +29,36 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
             - '../src/Tests/'
+            - '../src/Migrations/'
 
-    App\Controller:
-        resource: '../src/Controller'
+    # controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    App\Controller\:
+        resource: '../src/Controller/'
         tags: ['controller.service_arguments']
+
+    Sfl\Backend\:
+        resource: '../../src/Backend/'
+
+    Sfl\Shared\:
+        resource: '../../src/Shared/'
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    # MessageInterfaces
+    Sfl\Shared\Application\Bus\EventBus:
+        class: Sfl\Shared\Infrastructure\Bus\SymfonyEventBus
+        arguments: [ '@messenger.bus.events' ]
+
+    Sfl\Shared\Application\Bus\CommandBus:
+        class: Sfl\Shared\Infrastructure\Bus\SymfonyCommandBus
+        arguments: [ '@messenger.bus.commands' ]
+
+    Sfl\Shared\Application\Bus\QueryBus:
+        class: Sfl\Shared\Infrastructure\Bus\SymfonyQueryBus
+        arguments: [ '@messenger.bus.queries' ]
+
+    backend:
+        namespace: Sfl\Backend\Application\
+        resource: '%kernel.project_dir%/../src/Backend/Application'
