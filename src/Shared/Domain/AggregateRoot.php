@@ -6,5 +6,4 @@ namespace Sfl\Shared\Domain;
 
 interface AggregateRoot
 {
-    public function pullEvents(): iterable;
 }

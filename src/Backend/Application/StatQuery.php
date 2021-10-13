@@ -6,7 +6,7 @@ namespace Sfl\Backend\Application;
 
 use Sfl\Shared\Infrastructure\Bus\Query;
 
-final class StatEndpointQuery implements Query
+final class StatQuery implements Query
 {
     public function __construct(
         private array $stats

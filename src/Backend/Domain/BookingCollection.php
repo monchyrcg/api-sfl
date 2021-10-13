@@ -5,7 +5,6 @@ namespace Sfl\Backend\Domain;
 
 use Sfl\Shared\Domain\Collection as SflCollection;
 use function Lambdish\Phunctional\map;
-use function Lambdish\Phunctional\reduce;
 
 final class BookingCollection extends SflCollection
 {
@@ -25,39 +24,10 @@ final class BookingCollection extends SflCollection
         ), $bookings);
     }
 
-    public function getAvg(): float
-    {
-        $avg = reduce(
-            function ($acc, $booking) {
-                return $acc + $booking->profit();
-            },
-            $this
-        );
-
-        return round($avg/$this->count(), 2);
-
-    }
-
-    public function getMinMaxProfit(): array
-    {
-        $min = $max = 0;
-        foreach ($this as $key => $booking) {
-            $profit = $booking->profit();
-            if(0 === $key) {
-                $min = $max = $profit;
-            }
-
-            if($profit < $min) {
-                $min = $profit;
-            }
-
-            if($profit > $max){
-                $max = $profit;
-            }
-        }
-        return array(
-            'min_night' => $min,
-            'max_night' => $max
-        );
-    }
+     /**
+ * @return array
+ */public function getItems(): array
+{
+    return $this->items;
+}
 }

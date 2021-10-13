@@ -79,6 +79,11 @@ abstract class Collection implements \Iterator, \Countable
         return static::class === $other::class && $this->items === $other->items;
     }
 
+    public function column(string $column): array
+    {
+        return \array_column($this->items, $column);
+    }
+
     final public function jsonSerialize(): array
     {
         return $this->items;
@@ -87,6 +92,11 @@ abstract class Collection implements \Iterator, \Countable
     public function first()
     {
         return $this->items[array_key_first($this->items)] ?? null;
+    }
+
+    public function position($key)
+    {
+        return $this->items[$key] ?? null;
     }
 
     public function isUnique(): bool
