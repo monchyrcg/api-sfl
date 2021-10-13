@@ -9,7 +9,6 @@ use Sfl\Shared\Application\Bus\CommandBus;
 use Sfl\Shared\Application\Bus\QueryBus;
 use Sfl\Shared\Infrastructure\Bus\Query;
 use Sfl\Shared\Infrastructure\Bus\Command;
-use Sfl\Shared\Infrastructure\JsonApiResponseFactory;
 use Ramsey\Uuid\Uuid;
 
 

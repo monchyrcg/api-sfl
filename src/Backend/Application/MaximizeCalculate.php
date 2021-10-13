@@ -26,13 +26,16 @@ final class MaximizeCalculate
             $booking->calculateMaximizeProfit();
         }
 
+        // generate array combinations
         $combinations = $this->getCombinations($query->bookings());
 
+        // return the best options for these combinations
         $result = $this->getResults($combinations);
 
-        $children = $result[array_key_first($result)]['children'];
-        $bestCombinations = is_array($children) ? $children : array($result[array_key_first($result)]['children']);
-        array_push($bestCombinations, array_key_first($result));
+        //
+        $children = $result[\array_key_first($result)]['children'];
+        $bestCombinations = \is_array($children) ? $children : array($result[\array_key_first($result)]['children']);
+        \array_push($bestCombinations, \array_key_first($result));
 
         $bestCombinationsArray = map(
                 fn(int $position ) =>
@@ -41,8 +44,8 @@ final class MaximizeCalculate
 
         $statsCombinations = (new StatCalculate())->calculateStat($bestCombinationsArray);
         return array(
-            'total_profit' => $result[array_key_first($result)]['total'],
-            'request_ids' => array_column($bestCombinationsArray, 'request_id'),
+            'total_profit' => $result[\array_key_first($result)]['total'],
+            'request_ids' => \array_column($bestCombinationsArray, 'request_id'),
             'min_night' => $statsCombinations['min_night'],
             'max_night' => $statsCombinations['max_night'],
             'avg_night' => $statsCombinations['avg_night'],
@@ -97,22 +100,6 @@ final class MaximizeCalculate
         return $combinations;
     }
 
-    private function getChildren(array $all, array $children): string
-    {
-        $chi  = '';
-        foreach ($children as $child) {
-            $var = $all[$child];
-
-            if(is_numeric($var)) {
-                $chi .= $var.',';
-            } elseif(is_array($var) && !empty($var)) {
-                $chi .=$this->getChildren($all, $var);
-            }
-        }
-
-        return $chi;
-    }
-
     private function getResults(array $combinations): array
     {
         $results = [];
@@ -150,5 +137,21 @@ final class MaximizeCalculate
         }
 
         return array($key => $max);
+    }
+
+    private function getChildren(array $all, array $children): string
+    {
+        $chi  = '';
+        foreach ($children as $child) {
+            $var = $all[$child];
+
+            if(is_numeric($var)) {
+                $chi .= $var.',';
+            } elseif(is_array($var) && !empty($var)) {
+                $chi .=$this->getChildren($all, $var);
+            }
+        }
+
+        return $chi;
     }
 }
