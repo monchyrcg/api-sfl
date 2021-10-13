@@ -36,6 +36,10 @@ reload: composer-env-file
 	@docker-compose exec php-fpm kill -USR2 1
 	@docker-compose exec nginx nginx -s reload
 
+.PHONY: test
+test: composer-env-file
+	docker exec api_sfl ./vendor/bin/phpunit
+
 
 # 🐳 Docker Compose
 .PHONY: start
@@ -47,17 +51,22 @@ stop: CMD=stop
 .PHONY: destroy
 destroy: CMD=down
 
+# Usage: `make doco CMD="ps --services"`
+# Usage: `make doco CMD="build --parallel --pull --force-rm --no-cache"`
+.PHONY: doco
+doco start stop destroy: composer-env-file
+	@docker-compose $(CMD)
+
 .PHONY: rebuild
 rebuild: composer-env-file
 	docker-compose build --pull --force-rm --no-cache
 	make deps
 	make start
 
+.PHONY: ping-mysql
+ping-mysql:
+	@docker exec mysql mysqladmin --user=root --password= --host "127.0.0.1" ping --silent
+
 clean-cache:
-	@rm -rf app/*/var
+	@rm -rf apps/*/*/var
 	@docker exec api_sfl ./app/bin/console cache:warmup
-
-.PHONY: sh
-sh:
-	docker exec -ti -u1000 api_sfl sh -l
-

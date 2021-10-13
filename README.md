@@ -1,21 +1,21 @@
 # api-sfl
 
-## Requisitios
+## Requirements
 
 * Docker
 
-## Instalación
+## Installation
 
-Para instalar la imagen de docker solo hace falta ejecutar el siguiente comando:
+To install the docker image, you just need to run the following command:
 
 ```bash
 make build
 ```
 
-Url de acceso:
+Endpoints: 
 ```bash
-http://localhost:8040/stats
-http://localhost:8040/maximize
+ POST http://localhost:8040/stats
+ POST http://localhost:8040/maximize
 ```
 
 
