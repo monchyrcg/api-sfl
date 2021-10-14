@@ -61,5 +61,5 @@ rebuild: composer-env-file
 	make start
 
 clean-cache:
-	@rm -rf apps/*/*/var
+	@rm -rf app/var
 	@docker exec api_sfl ./app/bin/console cache:warmup
