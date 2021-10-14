@@ -51,10 +51,7 @@ stop: CMD=stop
 .PHONY: destroy
 destroy: CMD=down
 
-# Usage: `make doco CMD="ps --services"`
-# Usage: `make doco CMD="build --parallel --pull --force-rm --no-cache"`
-.PHONY: doco
-doco start stop destroy: composer-env-file
+start stop destroy: composer-env-file
 	@docker-compose $(CMD)
 
 .PHONY: rebuild
@@ -62,10 +59,6 @@ rebuild: composer-env-file
 	docker-compose build --pull --force-rm --no-cache
 	make deps
 	make start
-
-.PHONY: ping-mysql
-ping-mysql:
-	@docker exec mysql mysqladmin --user=root --password= --host "127.0.0.1" ping --silent
 
 clean-cache:
 	@rm -rf apps/*/*/var
